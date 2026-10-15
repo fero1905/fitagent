@@ -23,7 +23,7 @@ export function FitAgentScreen({
   children,
   scroll = true,
   contentStyle,
-  edges = ['top', 'right', 'bottom', 'left'],
+  edges = ['right', 'bottom', 'left'],
 }: ScreenProps) {
   const inner = scroll ? (
     <ScrollView

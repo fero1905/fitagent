@@ -1,25 +1,27 @@
+import { useLanguage } from '@/context/language-context';
 import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { FitAgentScreen } from '@/components/fitagent/screen';
 import { Card, PrimaryButton } from '@/components/fitagent/ui';
 import { FitAgentColors as C } from '@/constants/fitagent-theme';
 export default function WelcomeScreen() {
+  const { t } = useLanguage();
   return <FitAgentScreen>
-    <View style={s.brand}><View style={s.logo}><Text style={s.logoText}>F</Text></View><Text style={s.brandText}>FitAgent</Text><View style={s.badge}><Text style={s.badgeText}>SENİN TEMPON</Text></View></View>
+    <View style={s.brand}><View style={s.logo}><Text style={s.logoText}>F</Text></View><Text style={s.brandText}>FitAgent</Text><View style={s.badge}><Text style={s.badgeText}>{t("SENİN TEMPON")}</Text></View></View>
     <View style={s.hero}>
-      <Text style={s.eyebrow}>DAHA İYİ BİR RUTİNE İLK ADIM</Text>
-      <Text style={s.title}>Kendi tempon.{'\n'}Kendi <Text style={s.green}>hedefin.</Text></Text>
-      <Text style={s.description}>Hedeflerini, zamanını ve imkanlarını bir araya getir. Sana uygun antrenman yolculuğunun temelini oluştur.</Text>
+      <Text style={s.eyebrow}>{t("DAHA İYİ BİR RUTİNE İLK ADIM")}</Text>
+      <Text style={s.title}>{t("Kendi tempon.")}{'\n'}{t("Kendi ")}<Text style={s.green}>{t("hedefin.")}</Text></Text>
+      <Text style={s.description}>{t("Hedeflerini, zamanını ve imkanlarını bir araya getir. Sana uygun antrenman yolculuğunun temelini oluştur.")}</Text>
       <View style={s.visual} accessible={false}>
         <View style={s.orbit} /><View style={s.innerOrbit} />
         <View style={s.bar}><View style={s.plate} /><View style={s.shaft} /><View style={s.plate} /></View>
-        <View style={s.visualLabel}><Text style={s.visualLabelText}>KÜÇÜK ADIMLAR, YENİ BİR RUTİN</Text></View>
+        <View style={s.visualLabel}><Text style={s.visualLabelText}>{t("KÜÇÜK ADIMLAR, YENİ BİR RUTİN")}</Text></View>
       </View>
     </View>
-    <View style={s.steps}>{[['01', 'Hedefini seç'], ['02', 'Ritmini belirle'], ['03', 'Profilini tamamla']].map(([n, t]) => <View key={n} style={s.step}><Text style={s.stepNo}>{n}</Text><Text style={s.stepText}>{t}</Text></View>)}</View>
-    <Card><Text style={s.cardTitle}>Hayatına uyacak bir başlangıç</Text><Text style={s.description}>Evde veya spor salonunda. Kısa bir arada veya haftanın seçtiğin günlerinde. Önce seni tanıyalım.</Text><View style={s.tags}>{['Hedefin', 'Zamanın', 'Ekipmanın'].map(t => <View key={t} style={s.tag}><Text style={s.tagText}>{t}</Text></View>)}</View></Card>
-    <PrimaryButton label="Profilimi oluştur  →" onPress={() => router.push('/profile')} />
-    <Text style={s.footer}>Şimdi profilini hazırla; plan bağlantısı sonraki adımda eklenecek.</Text>
+    <View style={s.steps}>{[['01', t("Hedefini seç")], ['02', t("Ritmini belirle")], ['03', t("Profilini tamamla")]].map(([n, text]) => <View key={n} style={s.step}><Text style={s.stepNo}>{n}</Text><Text style={s.stepText}>{t(text)}</Text></View>)}</View>
+    <Card><Text style={s.cardTitle}>{t("Hayatına uyacak bir başlangıç")}</Text><Text style={s.description}>{t("Evde veya spor salonunda. Kısa bir arada veya haftanın seçtiğin günlerinde. Önce seni tanıyalım.")}</Text><View style={s.tags}>{[t("Hedefin"), t("Zamanın"), t("Ekipmanın")].map(text => <View key={text} style={s.tag}><Text style={s.tagText}>{t(text)}</Text></View>)}</View></Card>
+    <PrimaryButton label={t("Profilimi oluştur  →")} onPress={() => router.push('/profile')} />
+    <Text style={s.footer}>{t("Şimdi profilini hazırla; plan bağlantısı sonraki adımda eklenecek.")}</Text>
   </FitAgentScreen>;
 }
 const s = StyleSheet.create({

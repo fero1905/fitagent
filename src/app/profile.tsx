@@ -1,3 +1,4 @@
+import { useLanguage } from '@/context/language-context';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -18,6 +19,7 @@ import {
 import { toggleDay, validateProfile, weeklyDayCount, formatBirthDateInput, ageFromBirthDate, profileWithLocation, toggleEquipment, labelsForEquipment, sanitizeName, validateName, withPrimaryGoal, toggleAdditionalGoal, labelsForAdditionalGoals } from '@/utils/profile';
 
 export default function ProfileScreen() {
+  const { t, language } = useLanguage();
   const { profile, setProfile } = useProfile();
   const [errors, setErrors] = useState<ProfileErrors>({});
 
@@ -32,13 +34,13 @@ export default function ProfileScreen() {
 
   return (
     <FitAgentScreen edges={['right', 'bottom', 'left']}>
-      <PageHeading eyebrow="SENİ TANIYALIM" title="Senin hedefin, senin ritmin" detail="Birkaç bilgiyle başlayalım. Tercihlerini özet ekranında kontrol edip düzenleyebilirsin." />
+      <PageHeading eyebrow={t("SENİ TANIYALIM")} title={t("Senin hedefin, senin ritmin")} detail={t("Birkaç bilgiyle başlayalım. Tercihlerini özet ekranında kontrol edip düzenleyebilirsin.")} />
 
       <Card>
-        <SectionHeading number="01" title="Kişisel bilgilerin" detail="Sana ait temel bilgilerle başlayalım." />
+        <SectionHeading number="01" title={t("Kişisel bilgilerin")} detail={t("Sana ait temel bilgilerle başlayalım.")} />
         <LabeledInput
-          label="Ad"
-          placeholder="Adını yaz"
+          label={t("İsim Soyisim")}
+          placeholder={t("İsmini ve soyismini yaz")}
           value={profile.name}
           onChangeText={(value) => {
             const name = sanitizeName(value);
@@ -50,26 +52,26 @@ export default function ProfileScreen() {
           error={errors.name}
         />
         <LabeledInput
-          label="Doğum tarihi"
-          placeholder="GG.AA.YYYY (ör. 15.04.2002)"
+          label={t("Doğum tarihi")}
+          placeholder={t("GG.AA.YYYY (ör. 15.04.2002)")}
           value={profile.birthDate}
           onChangeText={(value) => setProfile({ ...profile, birthDate: formatBirthDateInput(value) })}
           maxLength={10}
           keyboardType="number-pad"
           error={errors.birthDate}
         />
-        <Text style={styles.hint}>{ageFromBirthDate(profile.birthDate) !== null ? `Yaşın otomatik hesaplanır: ${ageFromBirthDate(profile.birthDate)}` : 'Gün, ay ve yıl gir; yaşın otomatik hesaplanacak.'}</Text>
+        <Text style={styles.hint}>{ageFromBirthDate(profile.birthDate) !== null ? t("Yaşın otomatik hesaplanır: {age}", { age: ageFromBirthDate(profile.birthDate) ?? 0 }) : t("Gün, ay ve yıl gir; yaşın otomatik hesaplanacak.")}</Text>
         <LabeledInput
-          label="Boy (cm)"
-          placeholder="Örn. 175"
+          label={t("Boy (cm)")}
+          placeholder={t("Örn. 175")}
           value={profile.heightCm}
           onChangeText={(heightCm) => setProfile({ ...profile, heightCm })}
           keyboardType="decimal-pad"
           error={errors.heightCm}
         />
         <LabeledInput
-          label="Kilo (kg)"
-          placeholder="Örn. 72,5"
+          label={t("Kilo (kg)")}
+          placeholder={t("Örn. 72,5")}
           value={profile.weightKg}
           onChangeText={(weightKg) => setProfile({ ...profile, weightKg })}
           keyboardType="decimal-pad"
@@ -78,10 +80,10 @@ export default function ProfileScreen() {
       </Card>
 
       <Card>
-        <SectionHeading number="02" title="Hedef ve deneyim" detail="Nereye ulaşmak istediğini ve başlangıç seviyeni seç." />
+        <SectionHeading number="02" title={t("Hedef ve deneyim")} detail={t("Nereye ulaşmak istediğini ve başlangıç seviyeni seç.")} />
         <View style={styles.field}>
-          <FieldLabel>Ana hedefin</FieldLabel>
-          <Text style={styles.hint}>Planının önceliği olacak bir hedef seç.</Text>
+          <FieldLabel>{t("Ana hedefin")}</FieldLabel>
+          <Text style={styles.hint}>{t("Planının önceliği olacak bir hedef seç.")}</Text>
           <View style={styles.chips}>
             {GOALS.map((goal) => (
               <Chip
@@ -95,8 +97,8 @@ export default function ProfileScreen() {
           <FieldError message={errors.goal} />
         </View>
         <View style={styles.field}>
-          <FieldLabel>Ek hedeflerin (isteğe bağlı)</FieldLabel>
-          <Text style={styles.hint}>Birden fazla seçebilirsin. Ana hedefini burada tekrar seçmene gerek yok.</Text>
+          <FieldLabel>{t("Ek hedeflerin (isteğe bağlı)")}</FieldLabel>
+          <Text style={styles.hint}>{t("Birden fazla seçebilirsin. Ana hedefini burada tekrar seçmene gerek yok.")}</Text>
           <View style={styles.chips}>
             {GOALS.filter(goal => goal.id !== profile.goal).map(goal => (
               <Chip key={goal.id} label={goal.label} selected={profile.additionalGoals.includes(goal.id)}
@@ -104,15 +106,15 @@ export default function ProfileScreen() {
             ))}
           </View>
           <View style={styles.selectedBox}>
-            <Text style={styles.selectedTitle}>HEDEF SEÇİMLERİN</Text>
-            <Text style={styles.selectedText}>Ana hedef: {GOALS.find(goal => goal.id === profile.goal)?.label ?? 'Henüz seçilmedi'}</Text>
-            <Text style={styles.selectedText}>Ek hedefler: {labelsForAdditionalGoals(profile.additionalGoals) || 'Seçilmedi'}</Text>
+            <Text style={styles.selectedTitle}>{t("HEDEF SEÇİMLERİN")}</Text>
+            <Text style={styles.selectedText}>{t("Ana hedef: ")}{t(GOALS.find(goal => goal.id === profile.goal)?.label ?? t("Henüz seçilmedi"))}</Text>
+            <Text style={styles.selectedText}>{t("Ek hedefler: ")}{labelsForAdditionalGoals(profile.additionalGoals, language) || t("Seçilmedi")}</Text>
           </View>
           <FieldError message={errors.additionalGoals} />
         </View>
 
         <View style={styles.field}>
-          <FieldLabel>Seviye</FieldLabel>
+          <FieldLabel>{t("Seviye")}</FieldLabel>
           <View style={styles.chips}>
             {LEVELS.map((level) => (
               <Chip
@@ -128,9 +130,9 @@ export default function ProfileScreen() {
       </Card>
 
       <Card>
-        <SectionHeading number="03" title="Haftalık ritmin" detail="Hayatına uyacak günleri ve süreyi belirle." />
+        <SectionHeading number="03" title={t("Haftalık ritmin")} detail={t("Hayatına uyacak günleri ve süreyi belirle.")} />
         <View style={styles.field}>
-          <FieldLabel>Antrenman günleri</FieldLabel>
+          <FieldLabel>{t("Antrenman günleri")}</FieldLabel>
           <View style={styles.chips}>
             {WEEKDAYS.map((day) => (
               <Chip
@@ -141,17 +143,17 @@ export default function ProfileScreen() {
               />
             ))}
           </View>
-          <Text style={styles.hint}>Haftalık gün sayısı: {weeklyDayCount(profile.days)}</Text>
+          <Text style={styles.hint}>{t("Haftalık gün sayısı: ")}{weeklyDayCount(profile.days)}</Text>
           <FieldError message={errors.days} />
         </View>
 
         <View style={styles.field}>
-          <FieldLabel>Süre</FieldLabel>
+          <FieldLabel>{t("Süre")}</FieldLabel>
           <View style={styles.chips}>
             {DURATIONS.map((duration) => (
               <Chip
                 key={duration}
-                label={`${duration} dk`}
+                label={t("{duration} dk", { duration })}
                 selected={profile.durationMinutes === duration}
                 onPress={() => setProfile({ ...profile, durationMinutes: duration })}
               />
@@ -162,20 +164,20 @@ export default function ProfileScreen() {
       </Card>
 
       <Card>
-        <SectionHeading number="04" title="Nerede antrenman yapacaksın?" detail="Yerini seç; ekipman adımını buna göre hazırlayalım." />
+        <SectionHeading number="04" title={t("Nerede antrenman yapacaksın?")} detail={t("Yerini seç; ekipman adımını buna göre hazırlayalım.")} />
         <View style={styles.chips}>
-          <Chip label="Ev" selected={profile.location === 'home'} onPress={() => {
+          <Chip label={t("Ev")} selected={profile.location === 'home'} onPress={() => {
             setProfile(current => profileWithLocation(current, 'home'));
           }} />
-          <Chip label="Spor salonu" selected={profile.location === 'gym'} onPress={() => {
+          <Chip label={t("Spor salonu")} selected={profile.location === 'gym'} onPress={() => {
             setProfile(current => profileWithLocation(current, 'gym'));
           }} />
         </View>
         <FieldError message={errors.location} />
         {profile.location === 'home' ? <>
           <View style={styles.homeEquipment}>
-            <FieldLabel>Evde hangi ekipmanların var?</FieldLabel>
-            <Text style={styles.hint}>Birden fazla seçebilirsin. Hiç ekipmanın yoksa Ekipmansız seç.</Text>
+            <FieldLabel>{t("Evde hangi ekipmanların var?")}</FieldLabel>
+            <Text style={styles.hint}>{t("Birden fazla seçebilirsin. Hiç ekipmanın yoksa Ekipmansız seç.")}</Text>
             <View style={styles.chips}>
               {EQUIPMENT_OPTIONS.map(option => (
                 <Chip key={option.id} label={option.label}
@@ -187,16 +189,16 @@ export default function ProfileScreen() {
               ))}
             </View>
             <View style={styles.selectedBox}>
-              <Text style={styles.selectedTitle}>SEÇTİĞİN EKİPMANLAR</Text>
-              <Text style={styles.selectedText}>{profile.equipment.length ? labelsForEquipment(profile.equipment) : 'Henüz ekipman seçmedin.'}</Text>
+              <Text style={styles.selectedTitle}>{t("SEÇTİĞİN EKİPMANLAR")}</Text>
+              <Text style={styles.selectedText}>{profile.equipment.length ? labelsForEquipment(profile.equipment, language) : t("Henüz ekipman seçmedin.")}</Text>
             </View>
-            <Text style={styles.hint}>Ekipmansız ve diğer ekipmanlar birlikte seçilemez.</Text>
+            <Text style={styles.hint}>{t("Ekipmansız ve diğer ekipmanlar birlikte seçilemez.")}</Text>
           </View>
           <FieldError message={errors.equipment} />
-        </> : profile.location === 'gym' ? <Text style={styles.hint}>Spor salonu ekipmanları kullanılabilir kabul edildi. Ayrı ekipman seçimi gerekmiyor.</Text> : null}
+        </> : profile.location === 'gym' ? <Text style={styles.hint}>{t("Spor salonu ekipmanları kullanılabilir kabul edildi. Ayrı ekipman seçimi gerekmiyor.")}</Text> : null}
 
         <LabeledInput
-          label="Kısıt veya kaçınılacak hareket (isteğe bağlı)"
+          label={t("Kısıt veya kaçınılacak hareket (isteğe bağlı)")}
           value={profile.notes}
           onChangeText={(notes) => setProfile({ ...profile, notes })}
           multiline
@@ -205,9 +207,9 @@ export default function ProfileScreen() {
         />
       </Card>
 
-      <Text style={styles.hint}>Bu aşamada bilgilerin kalıcı olarak kaydedilmez.</Text>
-      {Object.keys(errors).length > 0 ? <FieldError message="Devam etmek için işaretlenen alanları kontrol et." /> : null}
-      <PrimaryButton label="Profil özetimi gör  →" onPress={goToSummary} />
+      <Text style={styles.hint}>{t("Bu aşamada bilgilerin kalıcı olarak kaydedilmez.")}</Text>
+      {Object.values(errors).some(Boolean) ? <FieldError message={t("Devam etmek için işaretlenen alanları kontrol et.")} /> : null}
+      <PrimaryButton label={t("Profil özetimi gör  →")} onPress={goToSummary} />
     </FitAgentScreen>
   );
 }

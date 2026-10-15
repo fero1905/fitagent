@@ -1,3 +1,4 @@
+import { useLanguage } from '@/context/language-context';
 import { useState, type ReactNode } from 'react';
 import {
   Pressable,
@@ -17,14 +18,16 @@ export function Card({ children, style }: { children: ReactNode; style?: StylePr
 }
 
 export function FieldLabel({ children }: { children: ReactNode }) {
-  return <Text style={styles.label}>{children}</Text>;
+  const { t } = useLanguage();
+  return <Text style={styles.label}>{typeof children === 'string' ? t(children) : children}</Text>;
 }
 
 export function FieldError({ message }: { message?: string }) {
+  const { t } = useLanguage();
   if (!message) {
     return null;
   }
-  return <Text style={styles.error}>{message}</Text>;
+  return <Text accessibilityLiveRegion="polite" style={styles.error}>{t(message)}</Text>;
 }
 
 export function LabeledInput({
@@ -32,6 +35,7 @@ export function LabeledInput({
   error,
   ...inputProps
 }: TextInputProps & { label: string; error?: string }) {
+  const { t } = useLanguage();
   const [focused, setFocused] = useState(false);
   return (
     <View style={styles.field}>
@@ -39,7 +43,8 @@ export function LabeledInput({
       <TextInput
         placeholderTextColor={FitAgentColors.textMuted}
         {...inputProps}
-        accessibilityLabel={inputProps.accessibilityLabel ?? label}
+        placeholder={inputProps.placeholder ? t(inputProps.placeholder) : undefined}
+        accessibilityLabel={t(inputProps.accessibilityLabel ?? label)}
         onFocus={(event) => { setFocused(true); inputProps.onFocus?.(event); }}
         onBlur={(event) => { setFocused(false); inputProps.onBlur?.(event); }}
         style={[styles.input, focused ? { borderColor: FitAgentColors.mintDark } : null, error ? styles.inputError : null, inputProps.style]}
@@ -58,6 +63,7 @@ export function Chip({
   selected: boolean;
   onPress: () => void;
 }) {
+  const { t } = useLanguage();
   return (
     <Pressable
       accessibilityRole="button"
@@ -68,7 +74,7 @@ export function Chip({
         selected ? styles.chipSelected : null,
         pressed ? styles.pressed : null,
       ]}>
-      <Text style={[styles.chipText, selected ? styles.chipTextSelected : null]}>{label}</Text>
+      <Text style={[styles.chipText, selected ? styles.chipTextSelected : null]}>{t(label)}</Text>
     </Pressable>
   );
 }
@@ -82,6 +88,7 @@ export function PrimaryButton({
   onPress: () => void;
   variant?: 'primary' | 'secondary';
 }) {
+  const { t } = useLanguage();
   const isSecondary = variant === 'secondary';
   return (
     <Pressable
@@ -93,7 +100,7 @@ export function PrimaryButton({
         pressed ? styles.pressed : null,
       ]}>
       <Text style={[styles.buttonText, isSecondary ? styles.buttonTextSecondary : null]}>
-        {label}
+        {t(label)}
       </Text>
     </Pressable>
   );

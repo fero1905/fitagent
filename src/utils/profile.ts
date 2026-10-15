@@ -1,3 +1,4 @@
+import { translate, type Language } from '@/i18n/translations';
 import {
   EQUIPMENT_OPTIONS,
   GOALS,
@@ -118,35 +119,35 @@ export function isProfileValid(form: ProfileForm): boolean {
   return Object.keys(validateProfile(form)).length === 0;
 }
 
-export function labelForGoal(goal: ProfileForm['goal']): string {
-  return GOALS.find((item) => item.id === goal)?.label ?? '—';
+export function labelForGoal(goal: ProfileForm['goal'], language: Language = 'tr'): string {
+  return translate(language, GOALS.find((item) => item.id === goal)?.label ?? '—');
 }
 
-export function labelForLevel(level: ProfileForm['level']): string {
-  return LEVELS.find((item) => item.id === level)?.label ?? '—';
+export function labelForLevel(level: ProfileForm['level'], language: Language = 'tr'): string {
+  return translate(language, LEVELS.find((item) => item.id === level)?.label ?? '—');
 }
 
-export function labelsForDays(days: Weekday[]): string {
+export function labelsForDays(days: Weekday[], language: Language = 'tr'): string {
   if (days.length === 0) {
     return '—';
   }
   const order = WEEKDAYS.map((day) => day.id);
   return [...days]
     .sort((a, b) => order.indexOf(a) - order.indexOf(b))
-    .map((day) => WEEKDAYS.find((item) => item.id === day)?.label)
+    .map((day) => translate(language, WEEKDAYS.find((item) => item.id === day)?.label ?? '—'))
     .filter(Boolean)
     .join(', ');
 }
 
-export function labelsForEquipment(equipment: Equipment[]): string {
-  if (equipment.includes('gym')) return 'Spor salonu ekipmanları';
+export function labelsForEquipment(equipment: Equipment[], language: Language = 'tr'): string {
+  if (equipment.includes('gym')) return translate(language, 'Spor salonu ekipmanları');
   if (equipment.length === 0) {
     return '—';
   }
   const order: Equipment[] = EQUIPMENT_OPTIONS.map((item) => item.id);
   return [...equipment]
     .sort((a, b) => order.indexOf(a) - order.indexOf(b))
-    .map((item) => EQUIPMENT_OPTIONS.find((option) => option.id === item)?.label)
+    .map((item) => translate(language, EQUIPMENT_OPTIONS.find((option) => option.id === item)?.label ?? '—'))
     .filter(Boolean)
     .join(', ');
 }
@@ -187,9 +188,9 @@ export function sanitizeName(value: string): string {
 }
 export function validateName(value: string): string | undefined {
   const normalized = value.normalize('NFC').trim().replace(/ +/g, ' ');
-  if (!normalized) return 'Ad boş bırakılamaz.';
+  if (!normalized) return 'İsim Soyisim boş bırakılamaz.';
   if (!/^\p{L}[\p{L}\p{M}]*(?:[ '\u2019-][\p{L}\p{M}]+)*$/u.test(normalized)) {
-    return 'Adında yalnızca harf, kelimeler arasında boşluk, tire veya apostrof kullan.';
+    return 'İsim Soyisim alanında yalnızca harf, kelimeler arasında boşluk, tire veya apostrof kullan.';
   }
   return undefined;
 }
@@ -201,6 +202,6 @@ export function toggleAdditionalGoal(form: ProfileForm, goal: Goal): ProfileForm
   return { ...form, additionalGoals: form.additionalGoals.includes(goal)
     ? form.additionalGoals.filter(item => item !== goal) : [...form.additionalGoals, goal] };
 }
-export function labelsForAdditionalGoals(goals: Goal[]): string {
-  return GOALS.filter(item => goals.includes(item.id)).map(item => item.label).join(', ');
+export function labelsForAdditionalGoals(goals: Goal[], language: Language = 'tr'): string {
+  return GOALS.filter(item => goals.includes(item.id)).map(item => translate(language, item.label)).join(', ');
 }
