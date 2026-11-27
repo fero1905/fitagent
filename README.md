@@ -1,56 +1,82 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# FitAgent – AI-Powered Personal Fitness Assistant
 
-## Get started
+## About the Project
 
-1. Install dependencies
+FitAgent is a mobile fitness application designed to provide personalized workout plans based on users' physical characteristics, fitness goals, experience levels, available workout time, and available equipment.
 
-   ```bash
+The project aims to make personalized fitness guidance more accessible through an AI-powered agent system.
+
+## Project Objectives
+
+- Collect users' personal and fitness-related information.
+- Generate personalized workout plans.
+- Adapt recommendations to users' fitness levels and goals.
+- Provide an accessible and user-friendly mobile experience.
+- Integrate an AI agent to support personalized fitness recommendations.
+
+## Technologies
+
+### Mobile Application
+- React Native
+- Expo
+- TypeScript
+
+### Planned Backend and AI Components
+- Backend framework: To be determined
+- Database: To be determined
+- LLM: To be determined
+- Agent framework: To be determined
+
+## Current Development Status
+
+- [x] Mobile application setup
+- [x] User onboarding interface
+- [x] User profile input fields
+- [x] Input validation
+- [x] Workout availability and scheduling inputs
+- [ ] Backend development
+- [ ] Database integration
+- [ ] AI agent integration
+- [ ] Personalized workout plan generation
+- [ ] Testing and evaluation
+
+## Project Structure
+
+The repository currently contains the mobile application source code.
+
+Backend and AI agent components will be added during the upcoming development stages.
+
+## Installation and Setup
+
+1. Clone the repository:
+
+   git clone https://github.com/fero1905/fitagent.git
+
+2. Navigate to the project directory:
+
+   cd fitagent
+
+3. Install dependencies:
+
    npm install
-   ```
 
-2. Start the app
+4. Start the Expo development server:
 
-   ```bash
    npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
+## Project Status
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+FitAgent is currently under development. The mobile onboarding interface has been implemented, while backend services, database integration, and AI agent functionality are planned for subsequent development stages.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Project Information
 
-## Get a fresh project
+**Project Name:** FitAgent
 
-When you're ready, run:
+**Course:** COME 491 – Graduation Project
 
-```bash
-npm run reset-project
-```
+**Student:** Ferit Cem Binzet
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**Student ID:** 210201097
 
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**University:** Üsküdar University
